@@ -1,8 +1,7 @@
 <template>
     <div class="box">
         <div id="time">
-            <input id="mytime" type="text" v-model="time" re>
-            <p>{{time}}</p>
+            <p id="mytime">时间 {{time}}</p>
         </div>
         <ul class="puzzle-wrap">
             <li 
@@ -12,16 +11,20 @@
                 @click="moveFn($index)"
             ></li>
         </ul>
-        <button class="btn btn-warning btn-block btn-start" @click="start">开始游戏</button>
+        <button id="startreset" class="btn btn-warning btn-block btn-start" @click="start">开始游戏</button>
         <button class="btn btn-warning btn-block btn-reset" @click="render">重置游戏</button>
+        <button class="btn btn-warning btn-block btn-reset" @click="render">暂停游戏</button>
     </div>
 </template>
 
 <script>
 export default {
+        
     data () {
         return {
-            puzzles: []
+            time: "00:00:##",
+            puzzles: [],
+            timer: null
         }
     },
     methods: {
@@ -44,19 +47,27 @@ export default {
             // 页面显示
             this.puzzles = puzzleArr
             this.puzzles.push('')
+            this.time= "00:00:00"
         },
         start(){
-            var timer=null;
-            clearInterval(timer);
-            // setInterval() 方法可按照指定的周期（以毫秒计）来调用函数或计算表达式。
-            timer=setInterval(function () 
-            {
+            clearInterval(this.timer);
+            var n=0;
+            this.time="11:11";
+            function toDub(n){
+                return {
+                n:n<10?("0"+n):(""+n)
+                }
+            }   
+            var mmm=new toDub(11);
+            console.log(mmm);
+            setInterval(() => {
                 n++;
-                var m=parseInt(n/3600)
-                var s=parseInt(n/60%60);
-                var M=parseInt(n%60);
-                document.getElementById('mytime').value=toDub(m)+":"+toDub(s)+":"+toDub(M);
-            },1000/60);
+                var m=parseInt(n/60)
+                var s=parseInt(n%60);
+                var mm=new toDub(m);
+                var ss=new toDub(s);
+                this.time=mm.n+":"+ss.n;
+            },1000)
         },
 
         // 点击方块
